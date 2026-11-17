@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 GAMES - T-SERIES INDIA MUSIC MILLION CHALLENGE - 50x 2D + 50x 3D</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+  body{background:#070714;color:#fff;padding:14px}
+  .wrap{max-width:1200px;margin:auto}
+  .top{text-align:center;background:linear-gradient(135deg,#ff0000,#ff6b00,#ffe600,#00ff88);color:#000;padding:22px;border-radius:22px}
+  .top h1{font-size:30px;line-height:1.1}
+  .top h2{font-size:18px}
+  .counter{text-align:center;margin:12px 0}
+  .counter b{color:#ffe600;font-size:18px}
+  .searchBox{width:100%;padding:12px;border-radius:12px;border:2px solid #ff0000;background:#222;color:#fff;margin:10px 0}
+  button{padding:11px 14px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin:4px;transition:all .3s}
+  button:hover{transform:scale(1.06);box-shadow:0 0 18px #ff0000}
+  .y{background:#ffe600}.g{background:#00ff88}.r{background:#ff0000;color:#fff}.p{background:#7a5cff;color:#fff}.b{background:#00ccff}
+  .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+  .tab{padding:12px 18px;border-radius:20px;background:#222;border:2px solid #444;cursor:pointer;font-weight:900;transition:all 2s ease}
+  .tab.active{background:#ff0000;color:#fff;box-shadow:0 0 20px #ff0000}
+  .tab:hover{transform:scale(1.06);box-shadow:0 0 20px #ffe600;transition:all 2s ease}
+  .grid{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+  .card{
+    flex:1 1 calc(20% - 12px);min-width:180px;
+    background:#1a1a2e;border:2px solid #333;border-radius:16px;padding:14px;text-align:center;cursor:pointer;
+    transition:all 2s ease;
+  }
+  .card:hover{
+    transform:scale(1.06) translateY(-4px) rotate(-1deg);
+    border-color:#ff0000;
+    background:linear-gradient(135deg,#3a0000,#1a003a);
+    box-shadow:0 0 25px #ff0000,0 0 50px #ffe600,0 0 80px #ff6b00;
+    transition:all 2s ease;
+  }
+  .card.active{border-color:#00ff88;box-shadow:0 0 25px #00ff88,0 0 50px #ffe600;transform:scale(1.03);transition:all 2s ease}
+  .card .icon{font-size:42px;display:block;margin:6px 0;transition:all 2s ease}
+  .card:hover .icon{transform:scale(1.25) rotate(10deg);transition:all 2s ease}
+  .card h3{font-size:14px;color:#ffe600;line-height:1.3;margin:6px 0}
+  .card:hover h3{color:#fff;text-shadow:0 0 10px #ff0000}
+  .card p{font-size:11px;opacity:.8;line-height:1.5}
+  .card .tag{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold;margin:2px}
+  .tag2d{background:#00ccff;color:#000}.tag3d{background:#ff0000;color:#fff}.tagPlay{background:#00ff88;color:#000}
+  .card .btn{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:20px;background:#ff0000;color:#fff;font-weight:900;font-size:11px;transition:all 2s ease}
+  .card:hover .btn{background:#ffe600;color:#000;box-shadow:0 0 18px #ffe600;transition:all 2s ease}
+  .player{background:#000;border:3px solid #ff0000;border-radius:18px;padding:14px;margin:12px 0;text-align:center}
+  .player h2{color:#ff6b00}
+  #gameCanvas{background:#0c1030;border:2px solid #333;border-radius:12px;margin:10px auto;display:block;cursor:pointer}
+  .log{background:#000;padding:12px;border-radius:12px;min-height:50px;line-height:1.5;font-size:13px}
+  .history{background:#121833;padding:12px;border-radius:12px;margin:10px 0}
+  @media(max-width:800px){.card{flex:1 1 calc(50% - 12px)}}
+  @media(max-width:500px){.card{flex:1 1 100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>🇮🇳🎵 T-SERIES INDIA MUSIC 🎵🇮🇳<br>MILLION CHALLENGE - 100 GAMES!</h1>
+    <h2>100 GAMES PROFESSIONALLY - 50 GAMES FOR 2D + 50 GAMES FOR 3D GAME ANIMATION</h2>
+    <p><b>List Of Icons - Maclick Mo Separately And Productively!</b><br>Million Challenge - 1,000,000 Views - 1,000,000 Streams - 1,000,000 Fans!</p>
+    <button class="g" onclick="speak('Welcome to T-Series India Music Million Challenge! 100 games! 50 2D and 50 3D! Lets go!')">🔊 PLAY VOICE</button>
+    <button class="y" onclick="openRandom()">🎲 RANDOM GAME</button>
+  </div>
+
+  <div class="counter">Total: <b>100 GAMES</b> | 2D: <b style="color:#00ccff">50</b> | 3D: <b style="color:#ff0000">50</b> | Na-click mo: <b id="clickedCount">0</b> | Played: <b id="playedCount">0</b> | Music Coins: <b id="totalScore">0</b> / 1,000,000 | Last: <b id="lastClicked" style="color:#00ff88">Wala pa</b></div>
+  <div style="height:14px;background:#222;border-radius:10px;overflow:hidden"><div id="fill" style="height:100%;background:linear-gradient(90deg,#ff0000,#ff6b00,#ffe600);width:0%;transition:width .3s"></div></div>
+
+  <input class="searchBox" id="searchInput" placeholder="🔍 Search 100 games... ex: Bollywood, Music, Dance, Tabla, Sitar, Song..." oninput="render()">
+
+  <div class="tabs">
+    <div class="tab active" id="tab-all" onclick="setFilter('all')">ALL 100</div>
+    <div class="tab" id="tab-2d" onclick="setFilter('2D')">🎮 50x 2D GAMES</div>
+    <div class="tab" id="tab-3d" onclick="setFilter('3D')">🕶️ 50x 3D GAMES</div>
+    <div class="tab" id="tab-fav" onclick="setFilter('fav')">❤️ FAVORITES</div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="y" onclick="sortGames('name')">Sort by Name</button>
+    <button class="g" onclick="sortGames('id')">Sort by Number</button>
+    <button class="b" onclick="showHistory()">📜 HISTORY</button>
+    <button class="r" onclick="resetAll()">↺ RESET</button>
+  </div>
+
+  <!-- PLAYER -->
+  <div class="player" id="playerBox">
+    <h2 id="playerTitle">👆 Click ka ng kahit anong ICON sa baba — lalabas agad yung game dito!</h2>
+    <p id="playerDesc" style="font-size:13px;opacity:.8">100 games professionally - 50 2D + 50 3D - Click icon separately and productively!</p>
+    <canvas id="gameCanvas" width="700" height="340"></canvas>
+    <p id="playerStats" style="font-size:13px;margin:6px 0">Music Coins: 0 | Lives: 3 | Level: 1 | Click canvas to play!</p>
+    <div>
+      <button class="y" onclick="playCurrent()">▶ PLAY</button>
+      <button class="g" onclick="pauseGame()">⏸ PAUSE</button>
+      <button class="b" onclick="toggleFav()">❤️ FAVORITE</button>
+      <button class="p" onclick="nextGame()">⏭ NEXT GAME</button>
+      <button class="r" onclick="shareGame()">📋 COPY GAME NAME</button>
+    </div>
+    <p style="font-size:12px;opacity:.7">Controls: Arrow Keys / WASD + Mouse Click on Canvas + Space Bar = Action! 3D games = CSS 3D + Canvas perspective! Goal: Reach 1,000,000 Music Coins!</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="history">
+    <b>📜 HISTORY - Games Na Na-click Mo (Productively Tracked):</b><br>
+    <span id="histList">Wala pa - click ka ng icon!</span>
+    <p style="font-size:12px;opacity:.7">Local save realtime - kahit refresh, andun pa rin history mo. Never mabubura unless clear storage.</p>
+  </div>
+
+  <div class="log" id="log">Log: 100 games ready for T-Series India Music Million Challenge... Click ka ng icon!</div>
+</div>
+
+<script>
+const GAMES_2D = [
+  ["Bollywood Music Clicker","🎵","Click music notes, collect 1,000,000 coins!"],
+  ["T-Series Karaoke","🎤","Sing T-Series songs, score points!"],
+  ["Bollywood Dance Party","💃","Dance like Bollywood, follow rhythm!"],
+  ["Tabla Master","🥁","Play tabla, follow beats!"],
+  ["Sitar Hero","🎸","Play sitar, hit notes!"],
+  ["Harmonium Challenge","🎹","Play harmonium, unlock songs!"],
+  ["Dhol Beats","🥁","Dhol beats, tap fast!"],
+  ["Bhangra Dance","🕺","Bhangra dance, high energy!"],
+  ["Classical Raag Quiz","🎼","Guess raag, win coins!"],
+  ["Bollywood Movie Quiz","🎬","Guess Bollywood movie!"],
+  ["Arijit Singing Challenge","🎙️","Sing like Arijit, score!"],
+  ["Neha Kakkar Party","🎉","Neha party, dance!"],
+  ["Badshah Rap Battle","🎤","Rap battle, win!"],
+  ["Honey Singh Beats","🎧","Honey Singh beats, tap!"],
+  ["Punjabi Hits","🎶","Punjabi hits, dance!"],
+  ["Tamil Songs Quiz","🎵","Guess Tamil song!"],
+  ["Telugu Hits","🎬","Telugu hits, dance!"],
+  ["Malayalam Melody","🎼","Malayalam melody quiz!"],
+  ["Kannada Songs","🎵","Kannada songs challenge!"],
+  ["Bengali Beats","🎶","Bengali beats, dance!"],
+  ["Marathi Music","🎤","Marathi music quiz!"],
+  ["Gujarati Garba","💃","Garba dance, spin!"],
+  ["Rajasthani Folk","🎵","Rajasthani folk music!"],
+  ["Holi Color Splash","🎨","Holi colors, splash!"],
+  ["Diwali Lights","🪔","Diwali lights, collect!"],
+  ["Wedding Dance","👰","Wedding dance, celebrate!"],
+  ["Sangeet Night","🌙","Sangeet night, sing!"],
+  ["Mehndi Designer","🌿","Design mehndi, score!"],
+  ["Street Food Music","🍛","Street food + music!"],
+  ["Taj Mahal Tour","🕌","Tour Taj Mahal, collect coins!"],
+  ["Mumbai Local Train","🚆","Mumbai train rush!"],
+  ["Delhi Metro Dash","🚇","Delhi metro dash!"],
+  ["Auto Rickshaw Race","🛺","Auto rickshaw race!"],
+  ["Cricket Music Match","🏏","Cricket + music, win!"],
+  ["IPL Dance Party","🏆","IPL dance party!"],
+  ["Chess India","♟️","Chess India vs AI!"],
+  ["Ludo King Music","🎲","Ludo + music!"],
+  ["Carrom Challenge","🎯","Carrom challenge!"],
+  ["Snake Ladder Music","🐍","Snake ladder + music!"],
+  ["Memory Match T-Series","🃏","Match T-Series cards!"],
+  ["Maze Runner India","🏃‍♂️","Run maze in India!"],
+  ["Gift Box India","🎁","Find gift boxes in India!"],
+  ["Fireworks Diwali","🎆","Diwali fireworks!"],
+  ["Confetti Holi","🎊","Holi confetti!"],
+  ["Bubble Shooter India","🫧","Bubble shooter India!"],
+  ["2048 India","🔢","2048 India numbers!"],
+  ["Tetris Bollywood","🧩","Tetris Bollywood!"],
+  ["Flappy Peacock","🦚","Flappy peacock!"],
+  ["Snake India","🐍","Snake India!"],
+  ["Puzzle India 1M","🧩","1M-piece puzzle!"]
+];
+const GAMES_3D = [
+  ["Bollywood Music 3D Clicker","🎵","3D music clicker, rotate!"],
+  ["T-Series Karaoke 3D","🎤","3D karaoke!"],
+  ["Bollywood Dance 3D Party","💃","3D Bollywood dance!"],
+  ["Tabla Master 3D","🥁","3D tabla master!"],
+  ["Sitar Hero 3D","🎸","3D sitar hero!"],
+  ["Harmonium 3D Challenge","🎹","3D harmonium!"],
+  ["Dhol Beats 3D","🥁","3D dhol beats!"],
+  ["Bhangra Dance 3D","🕺","3D bhangra dance!"],
+  ["Classical Raag 3D Quiz","🎼","3D raag quiz!"],
+  ["Bollywood Movie 3D Quiz","🎬","3D Bollywood quiz!"],
+  ["Arijit Singing 3D","🎙️","3D Arijit singing!"],
+  ["Neha Kakkar 3D Party","🎉","3D Neha party!"],
+  ["Badshah Rap 3D Battle","🎤","3D rap battle!"],
+  ["Honey Singh 3D Beats","🎧","3D Honey Singh beats!"],
+  ["Punjabi Hits 3D","🎶","3D Punjabi hits!"],
+  ["Tamil Songs 3D Quiz","🎵","3D Tamil quiz!"],
+  ["Telugu Hits 3D","🎬","3D Telugu hits!"],
+  ["Malayalam Melody 3D","🎼","3D Malayalam melody!"],
+  ["Kannada Songs 3D","🎵","3D Kannada songs!"],
+  ["Bengali Beats 3D","🎶","3D Bengali beats!"],
+  ["Marathi Music 3D","🎤","3D Marathi music!"],
+  ["Gujarati Garba 3D","💃","3D Garba dance!"],
+  ["Rajasthani Folk 3D","🎵","3D Rajasthani folk!"],
+  ["Holi Color 3D Splash","🎨","3D Holi splash!"],
+  ["Diwali Lights 3D","🪔","3D Diwali lights!"],
+  ["Wedding Dance 3D","👰","3D wedding dance!"],
+  ["Sangeet Night 3D","🌙","3D sangeet night!"],
+  ["Mehndi Designer 3D","🌿","3D mehndi designer!"],
+  ["Street Food Music 3D","🍛","3D street food + music!"],
+  ["Taj Mahal Tour 3D","🕌","3D Taj Mahal tour!"],
+  ["Mumbai Local Train 3D","🚆","3D Mumbai train!"],
+  ["Delhi Metro Dash 3D","🚇","3D Delhi metro!"],
+  ["Auto Rickshaw Race 3D","🛺","3D auto race!"],
+  ["Cricket Music Match 3D","🏏","3D cricket + music!"],
+  ["IPL Dance Party 3D","🏆","3D IPL dance!"],
+  ["Chess India 3D","♟️","3D chess India!"],
+  ["Ludo King Music 3D","🎲","3D Ludo + music!"],
+  ["Carrom Challenge 3D","🎯","3D carrom!"],
+  ["Snake Ladder Music 3D","🐍","3D snake ladder!"],
+  ["Memory Match T-Series 3D","🃏","3D memory match!"],
+  ["Maze Runner India 3D","🏃‍♂️","3D maze runner India!"],
+  ["Gift Box India 3D","🎁","3D gift box India!"],
+  ["Fireworks Diwali 3D","🎆","3D Diwali fireworks!"],
+  ["Confetti Holi 3D","🎊","3D Holi confetti!"],
+  ["Bubble Shooter India 3D","🫧","3D bubble shooter!"],
+  ["2048 India 3D","🔢","3D 2048 India!"],
+  ["Tetris Bollywood 3D","🧩","3D Tetris Bollywood!"],
+  ["Flappy Peacock 3D","🦚","3D flappy peacock!"],
+  ["Snake India 3D","🐍","3D snake India!"],
+  ["Puzzle India 1M 3D","🧩","3D 1M puzzle!"]
+];
+
+let allGames = [];
+GAMES_2D.forEach(function(g,i){ allGames.push({id:i+1, type:"2D", name:g[0], icon:g[1], desc:g[2]}); });
+GAMES_3D.forEach(function(g,i){ allGames.push({id:50+i+1, type:"3D", name:g[0], icon:g[1], desc:g[2]}); });
+
+let currentFilter = "all";
+let sortMode = "id";
+let currentGame = null;
+let clicked = 0;
+let played = 0;
+let totalScore = 0;
+let favorites = new Set(JSON.parse(localStorage.getItem("tseries_fav") || "[]"));
+let history = JSON.parse(localStorage.getItem("tseries_hist") || "[]");
+let gameState = {score:0, lives:3, level:1, px:350, py:170, playing:false};
+let gameInterval = null;
+
+function speak(t){
+  try{ speechSynthesis.cancel(); let u = new SpeechSynthesisUtterance(t); u.rate = 1; speechSynthesis.speak(u); }catch(e){}
+}
+function setFilter(f){
+  currentFilter = f;
+  document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("active"); });
+  let map = {all:"tab-all","2D":"tab-2d","3D":"tab-3d",fav:"tab-fav"};
+  document.getElementById(map[f]).classList.add("active");
+  render();
+}
+function sortGames(mode){ sortMode = mode; render(); }
+function render(){
+  let q = (document.getElementById("searchInput").value || "").toLowerCase();
+  let box = document.getElementById("grid");
+  box.innerHTML = "";
+  let list = allGames.filter(function(g){
+    if(currentFilter==="2D" && g.type!=="2D") return false;
+    if(currentFilter==="3D" && g.type!=="3D") return false;
+    if(currentFilter==="fav" && !favorites.has(g.id)) return false;
+    if(q && !g.name.toLowerCase().includes(q) && !g.desc.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(sortMode==="name") list.sort(function(a,b){ return a.name.localeCompare(b.name); });
+  else list.sort(function(a,b){ return a.id-b.id; });
+  list.forEach(function(g){
+    let d = document.createElement("div");
+    d.className = "card" + (currentGame && currentGame.id===g.id ? " active" : "");
+    d.id = "card-"+g.id;
+    let favStar = favorites.has(g.id) ? "❤️" : "🤍";
+    d.innerHTML = '<span class="tag '+(g.type==="2D"?"tag2d":"tag3d")+'">'+g.type+'</span> <span class="tag tagPlay">#'+g.id+'</span> <span style="float:right;cursor:pointer" onclick="event.stopPropagation(); toggleFavById('+g.id+')">'+favStar+'</span><span class="icon">'+g.icon+'</span><h3>'+g.name+'</h3><p>'+g.desc+'</p><span class="btn">▶ PLAY NOW</span>';
+    d.onclick = function(){ openGame(g.id); };
+    box.appendChild(d);
+  });
+  if(list.length===0) box.innerHTML = "<p style='padding:12px'>Walang nahanap - try ibang search!</p>";
+  updateStats();
+}
+function updateStats(){
+  document.getElementById("clickedCount").textContent = clicked;
+  document.getElementById("playedCount").textContent = played;
+  document.getElementById("totalScore").textContent = totalScore.toLocaleString();
+  document.getElementById("fill").style.width = Math.min(100, totalScore/1000000*100) + "%";
+  document.getElementById("histList").textContent = history.length===0 ? "Wala pa - click ka ng icon!" : history.slice(-20).join(" • ") + " - Total: "+history.length;
+}
+function openGame(id){
+  let g = allGames.find(function(x){ return x.id===id; });
+  if(!g) return;
+  currentGame = g;
+  clicked++;
+  history.push("#"+g.id+" "+g.name+" ("+g.type+")");
+  if(history.length>100) history = history.slice(-100);
+  try{
+    localStorage.setItem("tseries_hist", JSON.stringify(history));
+    localStorage.setItem("tseries_fav", JSON.stringify(Array.from(favorites)));
+  }catch(e){}
+  document.querySelectorAll(".card").forEach(function(c){ c.classList.remove("active"); });
+  let card = document.getElementById("card-"+id);
+  if(card) card.classList.add("active");
+  document.getElementById("playerTitle").textContent = "🎮 NOW PLAYING #" + g.id + " - " + g.name + " [" + g.type + "] " + g.icon;
+  document.getElementById("playerDesc").textContent = g.desc + " - T-Series India Music Million Challenge! Goal: 1,000,000 Music Coins!";
+  document.getElementById("lastClicked").textContent = g.name;
+  document.getElementById("log").textContent = "Log: Na-click mo #" + g.id + " - " + g.name + " (" + g.type + ") - Lalabas agad sa player sa taas! Click canvas to play!";
+  speak("Opening " + g.name + "! T-Series Million Challenge!");
+  gameState = {score:0, lives:3, level:1, px:350, py:170, playing:false};
+  drawGame();
+  document.getElementById("playerBox").scrollIntoView({behavior:"smooth"});
+  render();
+}
+function openRandom(){ let id = Math.floor(Math.random()*100)+1; openGame(id); }
+function nextGame(){ if(!currentGame){ openGame(1); return; } let nid = currentGame.id % 100 + 1; openGame(nid); }
+function toggleFav(){ if(!currentGame){ alert("Click ka muna ng game!"); return; } toggleFavById(currentGame.id); }
+function toggleFavById(id){ if(favorites.has(id)) favorites.delete(id); else favorites.add(id); try{ localStorage.setItem("tseries_fav", JSON.stringify(Array.from(favorites))); }catch(e){} render(); }
+function playCurrent(){
+  if(!currentGame){ alert("Click ka muna ng icon!"); return; }
+  gameState.playing = true; played++;
+  speak("Playing " + currentGame.name + "! T-Series Million Challenge!");
+  if(gameInterval) clearInterval(gameInterval);
+  gameInterval = setInterval(function(){
+    if(!gameState.playing) return;
+    gameState.score += 100; totalScore += 100;
+    gameState.px = 100 + Math.random()*500;
+    gameState.py = 80 + Math.random()*180;
+    drawGame();
+    document.getElementById("playerStats").textContent = "Music Coins: " + gameState.score.toLocaleString() + " | Lives: " + gameState.lives + " | Level: " + gameState.level + " | Game: " + currentGame.name + " (" + currentGame.type + ")";
+    updateStats();
+    if(totalScore>=1000000){ speak("You reached 1 Million! T-Series Million Challenge Complete!"); document.getElementById("log").textContent = "🏆 1,000,000 MUSIC COINS REACHED! T-SERIES MILLION CHALLENGE COMPLETE!"; clearInterval(gameInterval); }
+  }, 500);
+  document.getElementById("log").textContent = "▶ PLAYING #" + currentGame.id + " - " + currentGame.name + " - Click canvas to score!";
+}
+function pauseGame(){ gameState.playing = false; clearInterval(gameInterval); speak("Paused!"); }
+function shareGame(){
+  if(!currentGame){ alert("Click ka muna ng game!"); return; }
+  let txt = "T-Series India Music Million Challenge! Playing #" + currentGame.id + " " + currentGame.name + " (" + currentGame.type + ") - 100 Games - 50 2D + 50 3D!";
+  navigator.clipboard.writeText(txt).then(function(){ alert("Copied: " + txt); });
+}
+function showHistory(){ alert("📜 HISTORY - " + history.length + " games clicked:\n" + history.join("\n")); }
+function resetAll(){ clicked = 0; played = 0; totalScore = 0; document.getElementById("log").textContent = "Reset stats - History remains saved!"; updateStats(); }
+function drawGame(){
+  let c = document.getElementById("gameCanvas");
+  let ctx = c.getContext("2d");
+  ctx.clearRect(0,0,c.width,c.height);
+  let grad = ctx.createLinearGradient(0,0,0,c.height);
+  grad.addColorStop(0, currentGame && currentGame.type==="3D" ? "#3a0000" : "#0c1030");
+  grad.addColorStop(1, "#070714");
+  ctx.fillStyle = grad; ctx.fillRect(0,0,c.width,c.height);
+  if(currentGame && currentGame.type==="3D"){
+    ctx.strokeStyle = "rgba(255,0,0,0.4)";
+    for(let i=0;i<10;i++){ ctx.beginPath(); ctx.moveTo(350,170); ctx.lineTo(i*80,340); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,80+i*25); ctx.lineTo(700,80+i*25); ctx.stroke(); }
+    ctx.fillStyle = "#ff0000"; ctx.font = "bold 20px Arial"; ctx.fillText("3D MODE - Perspective!", 20, 30);
+  } else {
+    ctx.fillStyle = "#00ccff"; ctx.font = "bold 18px Arial"; ctx.fillText("2D MODE - Top-Down!", 20, 30);
+  }
+  ctx.fillStyle = "#fff"; ctx.font = "bold 22px Arial"; ctx.textAlign = "center";
+  ctx.fillText(currentGame ? currentGame.icon + " " + currentGame.name : "Click an icon to play! 🇮🇳", 350, 60);
+  ctx.font = "14px Arial"; ctx.fillText(currentGame ? currentGame.desc : "100 Games - 50 2D + 50 3D - T-Series India Music Million Challenge!", 350, 85);
+  ctx.font = "42px Arial"; ctx.fillText("🎤", gameState.px, gameState.py);
+  ctx.font = "36px Arial"; ctx.fillText(currentGame ? currentGame.icon : "🎵", 350, 250);
+  ctx.fillStyle = "#ffe600"; ctx.font = "bold 16px Arial"; ctx.textAlign = "left";
+  ctx.fillText("Music Coins: " + gameState.score.toLocaleString() + " | Lives: " + gameState.lives + " | Level: " + gameState.level, 20, 320);
+  ctx.textAlign = "right"; ctx.fillText("T-SERIES MILLION CHALLENGE! 🇮🇳", 680, 320);
+}
+document.getElementById("gameCanvas").addEventListener("click", function(e){
+  if(!currentGame){ alert("Click ka muna ng icon sa baba!"); return; }
+  gameState.score += 500; totalScore += 500;
+  let rect = e.target.getBoundingClientRect();
+  gameState.px = e.clientX - rect.left; gameState.py = e.clientY - rect.top;
+  drawGame();
+  document.getElementById("playerStats").textContent = "Music Coins: " + gameState.score.toLocaleString() + " | Lives: " + gameState.lives + " | Level: " + gameState.level + " | +500! Click canvas to play!";
+  document.getElementById("log").textContent = "🎵 Click! +500 Music Coins in " + currentGame.name + "!";
+  try{
+    let ctx2 = new (window.AudioContext || window.webkitAudioContext)();
+    let o = ctx2.createOscillator(); let g = ctx2.createGain(); o.connect(g); g.connect(ctx2.destination);
+    o.frequency.value = 880; o.type = "sine"; g.gain.value = 0.1; o.start(); o.stop(ctx2.currentTime+0.2);
+  }catch(err){}
+  updateStats();
+});
+document.addEventListener("keydown", function(e){
+  if(!currentGame) return;
+  if(e.key==="ArrowLeft" || e.key==="a") gameState.px = Math.max(0, gameState.px-20);
+  if(e.key==="ArrowRight" || e.key==="d") gameState.px = Math.min(680, gameState.px+20);
+  if(e.key==="ArrowUp" || e.key==="w") gameState.py = Math.max(40, gameState.py-20);
+  if(e.key==="ArrowDown" || e.key==="s") gameState.py = Math.min(300, gameState.py+20);
+  if(e.key===" "){ e.preventDefault(); gameState.score += 200; totalScore += 200; }
+  drawGame();
+});
+render();
+drawGame();
+</script>
+</body>
+</html>
